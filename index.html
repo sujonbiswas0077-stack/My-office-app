@@ -3,41 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আমার টুডু অ্যাপ</title>
+    <title>আমার অফিস অ্যাপ</title>
     <style>
-        body { background-color: #f0f2f5; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-        .todo-container { background: #fff; width: 90%; max-width: 350px; padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #333; }
-        .input-group { display: flex; gap: 5px; margin-bottom: 20px; }
-        input { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 6px; outline: none; }
-        button { background: #28a745; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
         ul { list-style: none; padding: 0; }
-        li { background: #f9f9f9; margin-bottom: 8px; padding: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 6px; border-left: 4px solid #28a745; }
-        .delete-btn { background: #ff4757; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        li { background: #f9f9f9; padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { background: #ff4444; padding: 5px 10px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div class="todo-container">
-  <h2>আমার আজকের কাজ 📝</h2>
-  <div class="input-group">
-    <input type="text" id="todoInput" placeholder="নতুন কাজ লিখুন...">
-    <button onclick="addTask()">যোগ</button>
-  </div>
-  <ul id="todoList"></ul>
+<div class="container">
+    <h2>অফিস টুডু লিস্ট</h2>
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="নতুন কাজ লিখুন...">
+        <button onclick="addTask()">যোগ করুন</button>
+    </div>
+    <ul id="taskList"></ul>
 </div>
 
 <script>
+    // অ্যাপ ওপেন করলেই আগের তথ্য লোড হবে
+    document.addEventListener("DOMContentLoaded", loadTasks);
+
     function addTask() {
-      const input = document.getElementById('todoInput');
-      const taskText = input.value.trim();
-      if (taskText === "") { alert("আগে কিছু লিখুন!"); return; }
+        let input = document.getElementById("taskInput");
+        let task = input.value;
+        if (task === "") return;
 
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${taskText}</span> <span class="delete-btn" onclick="this.parentElement.remove()">মুছে ফেলুন</span>`;
+        displayTask(task);
+        saveTask(task); // মেমোরিতে সেভ হবে
+        input.value = "";
+    }
 
-      document.getElementById('todoList').appendChild(li);
-      input.value = "";
+    function displayTask(task) {
+        let ul = document.getElementById("taskList");
+        let li = document.createElement("li");
+        li.innerHTML = `${task} <button class="delete-btn" onclick="removeTask(this, '${task}')">মুছুন</button>`;
+        ul.appendChild(li);
+    }
+
+    function saveTask(task) {
+        let tasks = JSON.parse(localStorage.getItem("myTasks")) || [];
+        tasks.push(task);
+        localStorage.setItem("myTasks", JSON.stringify(tasks));
+    }
+
+    function loadTasks() {
+        let tasks = JSON.parse(localStorage.getItem("myTasks")) || [];
+        tasks.forEach(displayTask);
+    }
+
+    function removeTask(btn, task) {
+        btn.parentElement.remove();
+        let tasks = JSON.parse(localStorage.getItem("myTasks")) || [];
+        tasks = tasks.filter(t => t !== task);
+        localStorage.setItem("myTasks", JSON.stringify(tasks));
     }
 </script>
 
