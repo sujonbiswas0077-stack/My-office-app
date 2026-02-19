@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার টুডু অ্যাপ</title>
+    <style>
+        body { background-color: #f0f2f5; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .todo-container { background: #fff; width: 90%; max-width: 350px; padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        .input-group { display: flex; gap: 5px; margin-bottom: 20px; }
+        input { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 6px; outline: none; }
+        button { background: #28a745; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; }
+        ul { list-style: none; padding: 0; }
+        li { background: #f9f9f9; margin-bottom: 8px; padding: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 6px; border-left: 4px solid #28a745; }
+        .delete-btn { background: #ff4757; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="todo-container">
+  <h2>আমার আজকের কাজ 📝</h2>
+  <div class="input-group">
+    <input type="text" id="todoInput" placeholder="নতুন কাজ লিখুন...">
+    <button onclick="addTask()">যোগ</button>
+  </div>
+  <ul id="todoList"></ul>
+</div>
+
+<script>
+    function addTask() {
+      const input = document.getElementById('todoInput');
+      const taskText = input.value.trim();
+      if (taskText === "") { alert("আগে কিছু লিখুন!"); return; }
+
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${taskText}</span> <span class="delete-btn" onclick="this.parentElement.remove()">মুছে ফেলুন</span>`;
+
+      document.getElementById('todoList').appendChild(li);
+      input.value = "";
+    }
+</script>
+
+</body>
+</html>
