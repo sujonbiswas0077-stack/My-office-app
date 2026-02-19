@@ -3,48 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আমার অফিস অ্যাপ</title>
+    <title>Sujon's Office App</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
-        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 400px; width: 100%; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
         .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        button { padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 16px; }
+        input:focus { border-color: #27ae60; }
+        button { padding: 12px 18px; background: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         ul { list-style: none; padding: 0; }
-        li { background: #f9f9f9; padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .delete-btn { background: #ff4444; padding: 5px 10px; font-size: 12px; }
+        li { background: #fff; margin-bottom: 10px; padding: 12px; border-radius: 8px; border-left: 5px solid #27ae60; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { background: #e74c3c; color: white; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        
+        /* আপনার নাম দেখানোর সেকশন */
+        .footer { margin-top: 30px; text-align: center; color: #7f8c8d; font-size: 14px; border-top: 1px solid #eee; padding-top: 15px; }
+        .footer b { color: #2c3e50; font-size: 16px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>অফিস টুডু লিস্ট</h2>
+    <h2>📋 অফিস টুডু লিস্ট</h2>
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="নতুন কাজ লিখুন...">
+        <input type="text" id="taskInput" placeholder="আজকের কাজ লিখুন...">
         <button onclick="addTask()">যোগ করুন</button>
     </div>
     <ul id="taskList"></ul>
+
+    <div class="footer">
+        অ্যাপটি তৈরি করেছেন: <br>
+        <b>সুজন বিশ্বাস</b>
+    </div>
 </div>
 
 <script>
-    // অ্যাপ ওপেন করলেই আগের তথ্য লোড হবে
     document.addEventListener("DOMContentLoaded", loadTasks);
 
     function addTask() {
         let input = document.getElementById("taskInput");
         let task = input.value;
         if (task === "") return;
-
         displayTask(task);
-        saveTask(task); // মেমোরিতে সেভ হবে
+        saveTask(task);
         input.value = "";
     }
 
     function displayTask(task) {
         let ul = document.getElementById("taskList");
         let li = document.createElement("li");
-        li.innerHTML = `${task} <button class="delete-btn" onclick="removeTask(this, '${task}')">মুছুন</button>`;
+        li.innerHTML = `<span>${task}</span> <button class="delete-btn" onclick="removeTask(this, '${task}')">মুছুন</button>`;
         ul.appendChild(li);
     }
 
