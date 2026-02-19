@@ -20,7 +20,7 @@
         .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: 0.5s; }
         
         .input-group { background: rgba(0,0,0,0.03); padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-        input, select { width: 90%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; background: var(--bg); color: var(--text); }
+        input { width: 90%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; background: var(--bg); color: var(--text); }
         
         .btn-add { width: 95%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
         
@@ -45,7 +45,7 @@
 <button class="theme-btn" onclick="toggleDark()">🌓 ডার্ক মোড</button>
 
 <div class="container">
-    <img src="https://via.placeholder.com/150" class="profile-img" id="userPhoto" alt="Sujon Biswas">
+    <img src="https://via.placeholder.com/150" class="profile-img" alt="Sujon Biswas">
     
     <h2 style="margin: 0; color: var(--primary);">SUJON BISWAS</h2>
     <p style="margin: 5px 0 15px; font-size: 13px; opacity: 0.8;">প্রফেশনাল অফিস অ্যাসিস্ট্যান্ট</p>
@@ -64,8 +64,8 @@
 
     <div class="emergency-box">
         <strong>📞 জরুরি কন্টাক্ট নম্বর:</strong><br>
-        অফিস: +৮৮০১৭XXXXXXXX <br>
-        জরুরি সেবা: ৯৯৯
+        অফিস: +৮৮০১৫৮১৪৪৭৬৮৩ <br>
+        সহকর্মী: +৮৮০১৮XXXXXXXX
     </div>
 
     <div class="footer">
@@ -84,7 +84,6 @@
         let input = document.getElementById("taskInput");
         if (input.value === "") return;
         
-        // সময় ও তারিখ রেকর্ড করা
         let date = new Date().toLocaleString('bn-BD', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
         let taskObj = { id: Date.now(), text: input.value, time: date };
 
@@ -130,8 +129,7 @@
     function updateProgress() {
         let tasks = JSON.parse(localStorage.getItem("finalSujonTasks")) || [];
         let bar = document.getElementById("progressBar");
-        // ১০টি কাজ শেষ করলে বারটি ফুল দেখাবে
-        let percent = (tasks.length / 10) * 100;
+        let percent = (tasks.length / 5) * 100; 
         bar.style.width = Math.min(percent, 100) + "%";
     }
 </script>
