@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujon's Super Office App</title>
+    <title>Sujon's Pro Office App</title>
     <style>
         :root { --bg: #f4f7f6; --card: white; --text: #2c3e50; --primary: #27ae60; --urgent: #e74c3c; }
         .dark-mode { --bg: #1a1a1a; --card: #2d2d2d; --text: #ecf0f1; --primary: #2ecc71; }
@@ -11,11 +11,8 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 15px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .container { max-width: 450px; width: 100%; background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
         
-        /* ১. প্রোফাইল পিকচার এরিয়া */
         .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 10px; object-fit: cover; background: #eee; }
         
-        /* ৪. প্রগ্রেস বার */
-        .progress-text { font-size: 12px; text-align: left; margin-bottom: 5px; font-weight: bold; }
         .progress-container { background: #eee; border-radius: 10px; height: 10px; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: 0.5s; }
         
@@ -24,18 +21,16 @@
         
         .btn-add { width: 95%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
         
-        /* ২. ডার্ক মোড বাটন */
         .theme-btn { position: fixed; top: 15px; right: 15px; background: #34495e; color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; z-index: 100; }
 
         ul { list-style: none; padding: 0; text-align: left; }
-        li { background: var(--bg); margin-bottom: 10px; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        li { background: var(--bg); margin-bottom: 10px; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
         
-        /* ৩. সময় ও তারিখ ডিজাইন */
         .task-info b { display: block; font-size: 16px; margin-bottom: 3px; }
         .task-date { font-size: 10px; color: #888; }
         
-        /* ৫. জরুরি ফোন নম্বর */
-        .emergency-box { margin-top: 25px; padding: 15px; background: rgba(231, 76, 60, 0.1); border-radius: 12px; border: 1px dashed var(--urgent); color: var(--urgent); font-size: 14px; }
+        .emergency-box { margin-top: 25px; padding: 15px; background: rgba(231, 76, 60, 0.1); border-radius: 12px; border: 1px dashed var(--urgent); color: var(--urgent); font-size: 14px; text-align: left; }
+        .emergency-box a { color: #2c3e50; text-decoration: none; font-weight: bold; display: block; margin-top: 5px; }
         
         .footer { margin-top: 25px; font-size: 13px; opacity: 0.7; border-top: 1px solid #eee; padding-top: 15px; }
     </style>
@@ -50,26 +45,25 @@
     <h2 style="margin: 0; color: var(--primary);">SUJON BISWAS</h2>
     <p style="margin: 5px 0 15px; font-size: 13px; opacity: 0.8;">প্রফেশনাল অফিস অ্যাসিস্ট্যান্ট</p>
 
-    <div class="progress-text">কাজের অগ্রগতি:</div>
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="নতুন কাজের নাম লিখুন...">
+        <input type="text" id="taskInput" placeholder="নতুন কাজ লিখুন...">
         <button class="btn-add" onclick="addTask()">তালিকায় যোগ করুন</button>
     </div>
     
     <ul id="taskList"></ul>
 
     <div class="emergency-box">
-        <strong>📞 জরুরি কন্টাক্ট নম্বর:</strong><br>
-        অফিস: +৮৮০১৫৮১৪৪৭৬৮৩ <br>
-        সহকর্মী: +৮৮০১৮XXXXXXXX
+        <strong>📞 জরুরি কন্টাক্ট নম্বর:</strong>
+        <a href="tel:01581447683">🙋‍♂️ আমার: ০১৫৮১৪৪৭৬৮৩</a>
+        <a href="tel:01998409512">🏢 অফিস: ০১৯৯৮৪০৯৫১২</a>
     </div>
 
     <div class="footer">
-        Developer: <b>SUJON BISWAS</b>
+        তৈরি করেছেন: <b>SUJON BISWAS</b>
     </div>
 </div>
 
@@ -101,33 +95,33 @@
                 <b>${taskObj.text}</b>
                 <span class="task-date">📅 ${taskObj.time}</span>
             </div>
-            <button style="background:var(--urgent); color:white; border:none; padding: 6px 12px; border-radius: 6px; cursor:pointer;" onclick="removeTask(this, ${taskObj.id})">শেষ</button>
+            <button style="background:var(--urgent); color:white; border:none; padding: 6px 12px; border-radius: 6px; cursor:pointer;" onclick="removeTask(this, ${taskObj.id})">মুছুন</button>
         `;
         ul.appendChild(li);
     }
 
     function saveTask(taskObj) {
-        let tasks = JSON.parse(localStorage.getItem("finalSujonTasks")) || [];
+        let tasks = JSON.parse(localStorage.getItem("proSujonTasks")) || [];
         tasks.push(taskObj);
-        localStorage.setItem("finalSujonTasks", JSON.stringify(tasks));
+        localStorage.setItem("proSujonTasks", JSON.stringify(tasks));
     }
 
     function loadTasks() {
-        let tasks = JSON.parse(localStorage.getItem("finalSujonTasks")) || [];
+        let tasks = JSON.parse(localStorage.getItem("proSujonTasks")) || [];
         tasks.forEach(displayTask);
         updateProgress();
     }
 
     function removeTask(btn, id) {
         btn.closest('li').remove();
-        let tasks = JSON.parse(localStorage.getItem("finalSujonTasks")) || [];
+        let tasks = JSON.parse(localStorage.getItem("proSujonTasks")) || [];
         tasks = tasks.filter(t => t.id !== id);
-        localStorage.setItem("finalSujonTasks", JSON.stringify(tasks));
+        localStorage.setItem("proSujonTasks", JSON.stringify(tasks));
         updateProgress();
     }
 
     function updateProgress() {
-        let tasks = JSON.parse(localStorage.getItem("finalSujonTasks")) || [];
+        let tasks = JSON.parse(localStorage.getItem("proSujonTasks")) || [];
         let bar = document.getElementById("progressBar");
         let percent = (tasks.length / 5) * 100; 
         bar.style.width = Math.min(percent, 100) + "%";
