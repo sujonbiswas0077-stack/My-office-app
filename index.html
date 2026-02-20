@@ -3,142 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Office App</title>
+    <title>My Office App - Dark Mode</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --text: #1e293b;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --clock-bg: #000000;
+            --clock-text: #38bdf8;
+            --accent: #2196f3;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
             padding: 20px;
             margin: 0;
         }
+
         .container {
             width: 100%;
             max-width: 400px;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        h1 { text-align: center; color: var(--primary); font-size: 24px; }
-        #clock {
-            font-size: 32px;
-            font-weight: bold;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
-            margin: 20px 0;
-            color: #334155;
-            background: #e2e8f0;
+        }
+
+        .user-art {
+            font-size: 30px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #f321d7, #2196f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
             padding: 10px;
             border-radius: 10px;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
+            font-size: 14px;
             margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 5px;
-            outline: none;
+
+        .info-box p { margin: 5px 0; }
+
+        .clock-box {
+            background: var(--clock-bg);
+            color: var(--clock-text);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 38px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 25px;
+            border: 2px solid #334155;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
         }
-        button {
-            padding: 10px 15px;
-            background: var(--primary);
+
+        .input-group { display: flex; gap: 8px; margin-bottom: 20px; }
+        input { 
+            flex: 1; 
+            padding: 12px; 
+            border-radius: 10px; 
+            border: 1px solid #334155; 
+            background: #0f172a; 
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            outline: none; 
         }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+        
+        button.add-btn { background: var(--accent); color: white; border: none; border-radius: 10px; padding: 0 20px; cursor: pointer; font-weight: bold; }
+
+        ul { list-style: none; padding: 0; text-align: left; }
         li {
-            background: #f1f5f9;
+            background: rgba(255, 255, 255, 0.05);
             margin-bottom: 8px;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-left: 4px solid var(--accent);
         }
-        .delete-btn {
-            background: #ef4444;
-            font-size: 12px;
-            padding: 5px 8px;
-        }
+        .delete-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>My Office Dashboard</h1>
+        <div class="user-art">SUJON BISWAS</div>
         
-        <div id="clock">00:00:00</div>
+        <div class="info-box">
+            <p>📞 অফিস: 01581447683</p>
+            <p>🆘 জরুরি: 01998409512</p>
+        </div>
+
+        <div class="clock-box" id="clock">00:00:00</div>
 
         <div class="input-group">
             <input type="text" id="taskInput" placeholder="নতুন কাজ লিখুন...">
-            <button onclick="addTask()">যোগ করুন</button>
+            <button class="add-btn" onclick="addTask()">যোগ</button>
         </div>
 
         <ul id="taskList"></ul>
     </div>
 
     <script>
-        // ঘড়ি আপডেট করার ফাংশন
         function updateClock() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            document.getElementById('clock').textContent = timeString;
+            document.getElementById('clock').textContent = now.toLocaleTimeString();
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // টাস্ক লিস্ট হ্যান্ডেল করা
         const taskInput = document.getElementById('taskInput');
         const taskList = document.getElementById('taskList');
-
-        // লোড হওয়ার সময় আগের ডাটা আনা
-        let savedTasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-        renderTasks();
-
-        function addTask() {
-            const taskText = taskInput.value.trim();
-            if (taskText === '') return;
-
-            savedTasks.push(taskText);
-            localStorage.setItem('myTasks', JSON.stringify(savedTasks));
-            taskInput.value = '';
-            renderTasks();
-        }
+        let savedTasks = JSON.parse(localStorage.getItem('officeTasks')) || [];
 
         function renderTasks() {
             taskList.innerHTML = '';
             savedTasks.forEach((task, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>${task}</span>
-                    <button class="delete-btn" onclick="deleteTask(${index})">মুছুন</button>
-                `;
+                li.innerHTML = `<span>${task}</span><button class="delete-btn" onclick="deleteTask(${index})">মুছুন</button>`;
                 taskList.appendChild(li);
             });
         }
 
-        function deleteTask(index) {
-            savedTasks.splice(index, 1);
-            localStorage.setItem('myTasks', JSON.stringify(savedTasks));
+        function addTask() {
+            if (taskInput.value.trim() === '') return;
+            savedTasks.push(taskInput.value.trim());
+            localStorage.setItem('officeTasks', JSON.stringify(savedTasks));
+            taskInput.value = '';
             renderTasks();
         }
+
+        function deleteTask(index) {
+            savedTasks.splice(index, 1);
+            localStorage.setItem('officeTasks', JSON.stringify(savedTasks));
+            renderTasks();
+        }
+        renderTasks();
     </script>
 </body>
 </html>
