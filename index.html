@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Office App - Dark Mode</title>
+    <title>My Office App - Dark Mode with Task Time</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -51,6 +51,7 @@
             font-size: 14px;
             margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
         }
 
         .info-box p { margin: 5px 0; }
@@ -84,7 +85,7 @@
         ul { list-style: none; padding: 0; text-align: left; }
         li {
             background: rgba(255, 255, 255, 0.05);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             padding: 12px;
             border-radius: 8px;
             display: flex;
@@ -92,7 +93,10 @@
             align-items: center;
             border-left: 4px solid var(--accent);
         }
-        .delete-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .task-content { display: flex; flex-direction: column; flex: 1; }
+        .task-text { font-size: 16px; margin-bottom: 4px; }
+        .task-time { font-size: 11px; color: #94a3b8; font-style: italic; }
+        .delete-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -125,28 +129,39 @@
 
         const taskInput = document.getElementById('taskInput');
         const taskList = document.getElementById('taskList');
-        let savedTasks = JSON.parse(localStorage.getItem('officeTasks')) || [];
+        let savedTasks = JSON.parse(localStorage.getItem('officeTasksWithTime')) || [];
 
         function renderTasks() {
             taskList.innerHTML = '';
-            savedTasks.forEach((task, index) => {
+            savedTasks.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${task}</span><button class="delete-btn" onclick="deleteTask(${index})">মুছুন</button>`;
+                li.innerHTML = `
+                    <div class="task-content">
+                        <span class="task-text">${item.text}</span>
+                        <span class="task-time">⏰ সময়: ${item.time}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteTask(${index})">মুছুন</button>
+                `;
                 taskList.appendChild(li);
             });
         }
 
         function addTask() {
-            if (taskInput.value.trim() === '') return;
-            savedTasks.push(taskInput.value.trim());
-            localStorage.setItem('officeTasks', JSON.stringify(savedTasks));
+            const text = taskInput.value.trim();
+            if (text === '') return;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            savedTasks.push({ text: text, time: timeString });
+            localStorage.setItem('officeTasksWithTime', JSON.stringify(savedTasks));
             taskInput.value = '';
             renderTasks();
         }
 
         function deleteTask(index) {
             savedTasks.splice(index, 1);
-            localStorage.setItem('officeTasks', JSON.stringify(savedTasks));
+            localStorage.setItem('officeTasksWithTime', JSON.stringify(savedTasks));
             renderTasks();
         }
         renderTasks();
