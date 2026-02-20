@@ -3,141 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujon's Office App</title>
+    <title>Sujon's Pro Office App</title>
     <style>
         :root {
+            --bg-color: #f0f2f5;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #1c1e21;
+            --accent: #0084ff;
+        }
+
+        [data-theme="dark"] {
             --bg-color: #000000;
-            --card-bg: #1c1c1e;
+            --card-bg: rgba(28, 28, 30, 0.8);
             --text-main: #ffffff;
-            --accent-blue: #0084ff;
-            --clock-color: #00ffcc;
+            --accent: #38bdf8;
         }
 
         body {
-            font-family: -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: 'Segoe UI', sans-serif;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             padding: 20px;
             margin: 0;
+            transition: 0.3s;
         }
 
         .container {
             width: 100%;
             max-width: 400px;
             background: var(--card-bg);
+            backdrop-filter: blur(15px);
             padding: 25px;
-            border-radius: 24px;
-            text-align: center;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        .user-art { font-size: 28px; font-weight: 800; margin-bottom: 5px; }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-        .phone-box {
-            background: rgba(255, 255, 255, 0.05);
+        .user-art { font-size: 26px; font-weight: 900; margin-top: 5px; }
+        .clock-display { font-size: 40px; font-weight: bold; text-align: center; margin: 20px 0; color: var(--text-main); }
+
+        /* ক্যালকুলেটর স্টাইল */
+        .calc-box {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #calc-display {
+            width: 100%;
+            height: 40px;
+            background: #fff;
+            color: #000;
+            text-align: right;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            border: none;
+        }
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+        .calc-btn {
+            padding: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .calc-btn.op { background: #f39c12; }
+        .calc-btn.clear { background: #e74c3c; }
+
+        .priority-select { display: flex; gap: 5px; margin: 10px 0; }
+        .priority-btn { flex: 1; padding: 5px; font-size: 11px; border-radius: 5px; border: none; cursor: pointer; opacity: 0.6; color: white; }
+        .priority-btn.active { opacity: 1; font-weight: bold; }
+
+        input#taskInput { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.2); color: var(--text-main); outline: none; box-sizing: border-box; }
+        .add-btn { width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 12px; margin-top: 10px; font-weight: bold; cursor: pointer; }
+
+        ul { list-style: none; padding: 0; margin-top: 20px;}
+        li {
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 12px;
             padding: 12px;
             border-radius: 15px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            text-align: left;
-            color: #a1a1aa;
-        }
-
-        .clock-display {
-            font-family: monospace;
-            font-size: 42px;
-            color: var(--clock-color);
-            background: #000;
-            padding: 15px;
-            border-radius: 18px;
-            margin-bottom: 25px;
-            border: 1px solid #333;
-        }
-
-        .input-area { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 14px; border-radius: 12px; border: none; background: #2c2c2e; color: white; outline: none; }
-        .add-btn { background: var(--accent-blue); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: bold; }
-
-        ul { list-style: none; padding: 0; }
-        li {
-            background: #2c2c2e;
-            margin-bottom: 12px;
-            padding: 15px;
-            border-radius: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-left: 6px solid #ccc;
         }
-
-        .task-info { display: flex; flex-direction: column; text-align: left; }
-        .task-text { font-size: 16px; color: white; }
-        /* শুধু সময় দেখাবে */
-        .task-time { font-size: 12px; color: #00ffcc; margin-top: 4px; font-weight: bold; }
-
-        .delete-btn { background: #ff3b30; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; }
+        .delete-btn { background: #ff4757; color: white; border: none; padding: 6px 10px; border-radius: 8px; font-size: 11px; }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
     <div class="container">
-        <div class="user-art">SUJON BISWAS</div>
+        <button class="theme-toggle" onclick="toggleMode()">🌓 Mode</button>
         
-        <div class="phone-box">
-            📞 অফিস: 01581447683 <br>
-            🆘 জরুরি: 01998409512
-        </div>
+        <div id="date" style="font-size: 12px; opacity: 0.8;"></div>
+        <div id="greet" style="color: var(--accent); font-weight: bold;"></div>
+        <div class="user-art">SUJON BISWAS</div>
 
-        <div class="clock-display" id="mainClock">00:00:00</div>
+        <div class="clock-display" id="clock">00:00:00</div>
 
-        <div class="input-area">
-            <input type="text" id="taskInput" placeholder="কাজ লিখুন...">
-            <button class="add-btn" onclick="addTask()">যোগ</button>
+        <input type="text" id="taskInput" placeholder="কাজের নাম লিখুন...">
+        <div class="priority-select">
+            <button class="priority-btn active" style="background:#0084ff;" onclick="setPriority(this, '#0084ff')">Normal</button>
+            <button class="priority-btn" style="background:#f1c40f;" onclick="setPriority(this, '#f1c40f')">Important</button>
+            <button class="priority-btn" style="background:#e74c3c;" onclick="setPriority(this, '#e74c3c')">Urgent</button>
         </div>
+        <button class="add-btn" onclick="addTask()">কাজ যোগ করুন</button>
 
         <ul id="taskList"></ul>
+
+        <div class="calc-box">
+            <input type="text" id="calc-display" disabled>
+            <div class="calc-buttons">
+                <button class="calc-btn clear" onclick="clearCalc()">C</button>
+                <button class="calc-btn op" onclick="press('/')">/</button>
+                <button class="calc-btn op" onclick="press('*')">*</button>
+                <button class="calc-btn op" onclick="press('-')">-</button>
+                <button class="calc-btn" onclick="press('7')">7</button>
+                <button class="calc-btn" onclick="press('8')">8</button>
+                <button class="calc-btn" onclick="press('9')">9</button>
+                <button class="calc-btn op" onclick="press('+')">+</button>
+                <button class="calc-btn" onclick="press('4')">4</button>
+                <button class="calc-btn" onclick="press('5')">5</button>
+                <button class="calc-btn" onclick="press('6')">6</button>
+                <button class="calc-btn op" onclick="calculate()">=</button>
+                <button class="calc-btn" onclick="press('1')">1</button>
+                <button class="calc-btn" onclick="press('2')">2</button>
+                <button class="calc-btn" onclick="press('3')">3</button>
+                <button class="calc-btn" onclick="press('0')">0</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        function updateClock() {
-            document.getElementById('mainClock').textContent = new Date().toLocaleTimeString();
+        let currentPriorityColor = '#0084ff';
+        function setPriority(btn, color) {
+            document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentPriorityColor = color;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
 
-        let tasks = JSON.parse(localStorage.getItem('sujonTasksFinal')) || [];
+        // ক্যালকুলেটর লজিক
+        let calcDisplay = document.getElementById('calc-display');
+        function press(val) { calcDisplay.value += val; }
+        function clearCalc() { calcDisplay.value = ''; }
+        function calculate() {
+            try { calcDisplay.value = eval(calcDisplay.value); }
+            catch { calcDisplay.value = 'Error'; }
+        }
 
+        function toggleMode() {
+            const body = document.body;
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function updateUI() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString();
+            document.getElementById('date').textContent = now.toDateString();
+            const hours = now.getHours();
+            let g = "Good Night 🌙";
+            if(hours < 12) g = "Good Morning ☀️";
+            else if(hours < 17) g = "Good Afternoon 🌤️";
+            else if(hours < 21) g = "Good Evening 🌆";
+            document.getElementById('greet').textContent = g;
+        }
+        setInterval(updateUI, 1000);
+        updateUI();
+
+        let tasks = JSON.parse(localStorage.getItem('sujonFinalTasks')) || [];
         function render() {
             const list = document.getElementById('taskList');
             list.innerHTML = '';
             tasks.forEach((t, i) => {
                 const li = document.createElement('li');
-                li.innerHTML = `
-                    <div class="task-info">
-                        <span class="task-text">${t.text}</span>
-                        <span class="task-time">${t.time}</span>
-                    </div>
-                    <button class="delete-btn" onclick="remove(${i})">মুছুন</button>
-                `;
+                li.style.borderLeftColor = t.color;
+                li.innerHTML = `<div><b>${t.text}</b><br><small>⏰ ${t.time}</small></div><button class="delete-btn" onclick="remove(${i})">মুছুন</button>`;
                 list.appendChild(li);
             });
         }
-
         function addTask() {
             const input = document.getElementById('taskInput');
-            if (!input.value.trim()) return;
-            
-            // শুধু সময়টুকু নেওয়া হচ্ছে
+            if(!input.value.trim()) return;
             const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            tasks.push({ text: input.value, time: time });
-            localStorage.setItem('sujonTasksFinal', JSON.stringify(tasks));
+            tasks.push({ text: input.value, time: time, color: currentPriorityColor });
+            localStorage.setItem('sujonFinalTasks', JSON.stringify(tasks));
             input.value = '';
             render();
         }
-
         function remove(index) {
             tasks.splice(index, 1);
-            localStorage.setItem('sujonTasksFinal', JSON.stringify(tasks));
+            localStorage.setItem('sujonFinalTasks', JSON.stringify(tasks));
             render();
         }
         render();
