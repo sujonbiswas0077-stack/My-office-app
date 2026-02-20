@@ -1,117 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujon's Ultimate Office App</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Sujon's Pro Office App</title>
     <style>
-        :root {
-            --bg-color: #f0f2f5;
-            --card-bg: rgba(255, 255, 255, 0.75);
-            --text-main: #1c1e21;
-            --accent: #0084ff;
-        }
-        [data-theme="dark"] {
-            --bg-color: #000000;
-            --card-bg: rgba(28, 28, 30, 0.9);
-            --text-main: #ffffff;
-            --accent: #38bdf8;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-image: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-            margin: 0;
-            transition: 0.3s;
-        }
-
-        /* লক স্ক্রিন */
-        #lock-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(25px);
-            z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 420px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            padding: 25px;
-            border-radius: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            text-align: center;
-            display: none; /* আনলক না হওয়া পর্যন্ত হাইড */
-        }
-
-        .theme-toggle { position: absolute; top: 20px; right: 20px; background: var(--accent); color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        :root { --bg: #f8f9fa; --card: #ffffff; --text: #333; --primary: #4CAF50; --urgent: #ff4757; }
+        .dark-mode { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --primary: #81c784; }
         
-        .clock-display { font-size: 40px; font-weight: bold; margin: 10px 0; color: var(--text-main); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
+        
+        /* লোগো ও গোলাকার নামের স্টাইল */
+        .profile-section { margin-top: 20px; text-align: center; }
+        .circle-logo { width: 100px; height: 100px; background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; border: 5px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: 0 auto; }
+        .circle-logo span { font-size: 24px; line-height: 1; }
+        .circle-logo small { font-size: 10px; margin-top: 4px; text-transform: uppercase; }
 
-        /* নোটবুক */
-        .notepad {
-            background: rgba(255, 255, 150, 0.15);
-            border-left: 5px solid #ffd700;
-            padding: 10px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: left;
-        }
-        #quickNote { width: 100%; height: 50px; background: transparent; border: none; color: var(--text-main); outline: none; resize: none; font-style: italic; }
+        .user-name { font-size: 22px; font-weight: bold; color: var(--primary); margin-top: 10px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; }
+        .user-role { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
 
-        /* ইনপুট গ্রুপ */
-        .input-box { display: flex; gap: 5px; margin-bottom: 10px; }
-        input#taskInput { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); outline: none; background: rgba(255,255,255,0.2); color: var(--text-main); }
-        .voice-btn { background: #ff4757; color: white; border: none; border-radius: 10px; padding: 0 12px; cursor: pointer; }
+        .container { max-width: 400px; width: 100%; background: var(--card); padding: 20px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
 
-        .priority-btn { flex: 1; padding: 8px; border-radius: 8px; border: none; cursor: pointer; color: white; opacity: 0.5; font-size: 11px; }
-        .priority-btn.active { opacity: 1; }
+        /* প্রগ্রেস বার */
+        .progress-box { margin-bottom: 20px; text-align: left; }
+        .progress-label { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: var(--primary); }
+        .progress-container { background: #e0e0e0; border-radius: 10px; height: 12px; overflow: hidden; }
+        .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: 0.6s ease; }
+
+        /* ইনপুট স্টাইল */
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        input { padding: 12px; border: 2px solid #eee; border-radius: 12px; outline: none; font-size: 15px; background: var(--bg); color: var(--text); }
+        .btn-add { padding: 12px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.2s; }
+        .btn-add:active { transform: scale(0.95); }
 
         /* টাস্ক লিস্ট */
-        ul { list-style: none; padding: 0; margin-top: 15px; }
-        li {
-            background: rgba(255, 255, 255, 0.1);
-            margin-bottom: 10px;
-            padding: 12px;
-            border-radius: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 6px solid #ccc;
-        }
+        ul { list-style: none; padding: 0; }
+        li { background: var(--bg); margin-bottom: 12px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .task-info b { font-size: 16px; display: block; }
+        .task-date { font-size: 10px; color: #888; margin-top: 4px; display: block; }
+        .btn-delete { background: var(--urgent); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
-        /* ক্যালকুলেটর */
-        .calc-box { background: rgba(0, 0, 0, 0.1); padding: 15px; border-radius: 20px; margin-top: 20px; }
-        .calc-btn { padding: 10px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        /* জরুরি কন্টাক্ট স্টাইল */
+        .contact-card { margin-top: 25px; background: #fff5f5; border: 1px solid #ffcccc; padding: 15px; border-radius: 15px; text-align: left; }
+        .contact-card h4 { margin: 0 0 10px 0; color: #d63031; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+        .contact-link { display: block; color: #2d3436; text-decoration: none; font-size: 14px; margin-bottom: 8px; font-weight: bold; }
+
+        /* ডার্ক মোড বাটন */
+        .theme-toggle { position: fixed; top: 15px; right: 15px; background: #333; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+
+        .footer { margin-top: 30px; font-size: 12px; font-weight: bold; opacity: 0.6; }
     </style>
 </head>
-<body data-theme="light">
+<body>
 
-    <div id="lock-screen">
-        <h2 id="lock-title">Enter PIN</h2>
-        <input type="password" id="pinInput" style="width:120px; padding:15px; font-size:24px; text-align:center; border-radius:10px; border:none; margin-bottom:15px;" maxlength="4" placeholder="****">
-        <button onclick="checkPin()" style="background:var(--accent); color:white; padding:10px 30px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Unlock</button>
-        <p id="lock-msg" style="color:#ff4757; margin-top:10px;"></p>
+<button class="theme-toggle" onclick="toggleTheme()">🌓 ডার্ক মোড</button>
+
+<div class="profile-section">
+    <div class="circle-logo">
+        <span>SB</span>
+        <small>SUJON BISWAS</small>
+    </div>
+    <div class="user-name">SUJON BISWAS</div>
+    <div class="user-role">প্রফেশনাল অফিস অ্যাসিস্ট্যান্ট</div>
+</div>
+
+<div class="container">
+    <div class="progress-box">
+        <div class="progress-label">কাজের অগ্রগতি:</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
     </div>
 
-    <div class="container" id="main-app">
-        <button class="theme-toggle" onclick="toggleMode()">🌓 Mode</button>
-        
-        <div id="date" style="font-size: 12px; opacity: 0.7;"></div>
-        <div id="greet" style="font-weight: bold; color: var(--accent);">Welcome</div>
-        <div style="font-size: 26px; font-weight: 900; margin-bottom: 10px;">SUJON BISWAS</div>
-        
-        <div class="clock-display" id="clock">00:00:00</div>
-
-        <div class="notepad">
-            <small>📌 Quick Note:</small>
-            <textarea id="quickNote" placeholder="জর
+    <div class="input-group">
+        <input type="text" id="taskInput
