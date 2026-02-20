@@ -5,139 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sujon's Pro Office App</title>
     <style>
-        :root { --bg: #f8f9fa; --card: #ffffff; --text: #333; --primary: #4CAF50; --urgent: #ff4757; }
-        .dark-mode { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --primary: #81c784; }
+        :root { --bg: #f0f2f5; --card: #ffffff; --text: #1c1e21; --primary: #4CAF50; --urgent: #ff4757; --calc-bg: #2c3e50; }
+        .dark-mode { --bg: #18191a; --card: #242526; --text: #e4e6eb; --primary: #2ecc71; --calc-bg: #1a1a1a; }
         
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         
-        /* আপনার চাওয়া গোলাকার লোগো ডিজাইন */
-        .profile-section { margin-top: 20px; text-align: center; }
-        .circle-logo { width: 100px; height: 100px; background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; border: 5px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: 0 auto; }
-        .circle-logo span { font-size: 24px; line-height: 1; }
-        .circle-logo small { font-size: 10px; margin-top: 4px; text-transform: uppercase; }
+        .header-section { text-align: center; margin-top: 15px; }
+        .circle-logo { width: 90px; height: 90px; background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 0 auto; }
+        .user-name { font-size: 20px; font-weight: bold; color: var(--primary); margin-top: 10px; text-transform: uppercase; }
 
-        .user-name { font-size: 22px; font-weight: bold; color: var(--primary); margin-top: 10px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; }
-        .user-role { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+        .container { max-width: 400px; width: 100%; background: var(--card); padding: 20px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-top: 15px; }
 
-        .container { max-width: 400px; width: 100%; background: var(--card); padding: 20px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-
-        /* কাজের অগ্রগতি বাটন */
-        .progress-box { margin-bottom: 20px; text-align: left; }
-        .progress-label { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: var(--primary); }
-        .progress-container { background: #e0e0e0; border-radius: 10px; height: 12px; overflow: hidden; }
-        .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: 0.6s ease; }
-
-        /* ইনপুট বক্স যা আপনি খুজছিলেন */
         .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        input { padding: 12px; border: 2px solid #eee; border-radius: 12px; outline: none; font-size: 15px; background: var(--bg); color: var(--text); }
-        .btn-add { padding: 12px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.2s; }
-        .btn-add:active { transform: scale(0.95); }
+        input[type="text"], textarea { padding: 12px; border: 2px solid #eee; border-radius: 12px; outline: none; background: var(--bg); color: var(--text); font-family: inherit; }
+        .btn-add { padding: 12px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; }
 
         ul { list-style: none; padding: 0; }
-        li { background: var(--bg); margin-bottom: 12px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .btn-delete { background: var(--urgent); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        li { background: var(--bg); margin-bottom: 8px; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
+        .delete-task { background: var(--urgent); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
 
-        /* জরুরি কন্টাক্ট নম্বরসমূহ */
-        .contact-card { margin-top: 25px; background: #fff5f5; border: 1px solid #ffcccc; padding: 15px; border-radius: 15px; text-align: left; }
-        .contact-link { display: block; color: #2d3436; text-decoration: none; font-size: 14px; margin-bottom: 8px; font-weight: bold; }
+        .calculator { margin-top: 25px; background: var(--calc-bg); padding: 15px; border-radius: 15px; color: white; }
+        .calc-display { width: 100%; height: 45px; background: #ecf0f1; border: none; margin-bottom: 10px; text-align: right; padding: 10px; font-size: 20px; border-radius: 8px; color: #333; box-sizing: border-box; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .calc-grid button { padding: 15px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; background: #34495e; color: white; }
+        .calc-grid button.op { background: #f39c12; }
+        .calc-grid button.clr { background: #e74c3c; grid-column: span 2; }
+        .calc-grid button.eq { background: #27ae60; grid-column: span 2; }
 
-        .theme-toggle { position: fixed; top: 15px; right: 15px; background: #333; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+        .note-section { margin-top: 25px; text-align: left; }
+        .note-section h4 { margin-bottom: 5px; font-size: 14px; }
+
+        .contact-box { margin-top: 20px; background: #fff5f5; padding: 15px; border-radius: 15px; border: 1px solid #ffcccc; text-align: left; }
+        .contact-box a { display: block; color: #2d3436; text-decoration: none; font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+
+        .theme-btn { position: fixed; top: 15px; right: 15px; background: #333; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; z-index: 1000; }
     </style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()">🌓 ডার্ক মোড</button>
+<button class="theme-btn" onclick="toggleTheme()">🌓 থিম পরিবর্তন</button>
 
-<div class="profile-section">
-    <div class="circle-logo">
-        <span>SB</span>
-        <small>SUJON BISWAS</small>
-    </div>
+<div class="header-section">
+    <div class="circle-logo">SB</div>
     <div class="user-name">SUJON BISWAS</div>
-    <div class="user-role">প্রফেশনাল অফিস অ্যাসিস্ট্যান্ট</div>
 </div>
 
 <div class="container">
-    <div class="progress-box">
-        <div class="progress-label">কাজের অগ্রগতি:</div>
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="নতুন কাজের নাম...">
+        <button class="btn-add" onclick="addTask()">তালিকায় যোগ করুন</button>
+    </div>
+    <ul id="taskList"></ul>
+
+    <div class="note-section">
+        <h4>📝 ব্যক্তিগত নোটবুক:</h4>
+        <textarea id="personalNote" rows="3" placeholder="জরুরি কিছু লিখে রাখুন..." style="width: 100%; box-sizing: border-box;" oninput="saveNote()"></textarea>
+    </div>
+
+    <div class="calculator">
+        <h4 style="margin-top:0; font-size: 14px;">অফিস ক্যালকুলেটর</h4>
+        <input type="text" id="calcDisplay" class="calc-display" readonly>
+        <div class="calc-grid">
+            <button onclick="calcIn('7')">7</button><button onclick="calcIn('8')">8</button><button onclick="calcIn('9')">9</button><button class="op" onclick="calcIn('/')">/</button>
+            <button onclick="calcIn('4')">4</button><button onclick="calcIn('5')">5</button><button onclick="calcIn('6')">6</button><button class="op" onclick="calcIn('*')">*</button>
+            <button onclick="calcIn('1')">1</button><button onclick="calcIn('2')">2</button><button onclick="calcIn('3')">3</button><button class="op" onclick="calcIn('-')">-</button>
+            <button onclick="calcIn('0')">0</button><button onclick="calcIn('.')">.</button><button class="op" onclick="calcIn('+')">+</button><button class="op" onclick="calculate()">=</button>
+            <button class="clr" onclick="document.getElementById('calcDisplay').value=''">C</button>
+            <button class="eq" onclick="calculate()">ফলাফল</button>
         </div>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="taskInput" placeholder="নতুন কাজের নাম লিখুন...">
-        <button class="btn-add" onclick="addTask()">তালিকায় যোগ করুন</button>
-    </div>
-    
-    <ul id="taskList"></ul>
-
-    <div class="contact-card">
-        <strong style="color: #d63031; font-size: 14px; display: block; margin-bottom: 10px;">📞 জরুরি কন্টাক্ট নম্বর:</strong>
-        <a href="tel:01581447683" class="contact-link">🙋‍♂️ আমার: ০১৫৮১৪৪৭৬৮৩</a>
-        <a href="tel:01998409512" class="contact-link">🏢 অফিস: ০১৯৯৮৪০৯৫১২</a>
+    <div class="contact-box">
+        <strong style="color:#d63031; font-size:13px;">📞 কন্টাক্ট নম্বর:</strong>
+        <a href="tel:01581447683">🙋‍♂️ আমার: ০১৫৮১৪৪৭৬৮৩</a>
+        <a href="tel:01998409512">🏢 অফিস: ০১৯৯৮৪০৯৫১২</a>
     </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", loadTasks);
+    document.addEventListener("DOMContentLoaded", () => {
+        loadTasks();
+        document.getElementById("personalNote").value = localStorage.getItem("sujonNote") || "";
+        if(localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+    });
 
     function toggleTheme() {
         document.body.classList.toggle("dark-mode");
+        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
     }
 
     function addTask() {
         let input = document.getElementById("taskInput");
         if (input.value.trim() === "") return;
-        
-        let now = new Date();
-        let dateStr = now.toLocaleString('bn-BD', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
-        
-        let taskObj = { id: Date.now(), text: input.value, time: dateStr };
-        displayTask(taskObj);
-        saveTask(taskObj);
+        let task = { id: Date.now(), text: input.value };
+        displayTask(task);
+        saveTask(task);
         input.value = "";
-        updateProgress();
     }
 
-    function displayTask(taskObj) {
+    function displayTask(task) {
         let ul = document.getElementById("taskList");
         let li = document.createElement("li");
-        li.innerHTML = `
-            <div>
-                <b>${taskObj.text}</b>
-                <span style="font-size: 10px; color: #888; display: block;">📅 ${taskObj.time}</span>
-            </div>
-            <button class="btn-delete" onclick="removeTask(this, ${taskObj.id})">মুছুন</button>
-        `;
+        li.innerHTML = `<span>${task.text}</span> <button class="delete-task" onclick="removeTask(this, ${task.id})">মুছুন</button>`;
         ul.appendChild(li);
     }
 
-    function saveTask(taskObj) {
-        let tasks = JSON.parse(localStorage.getItem("sujonTasks_Final")) || [];
-        tasks.push(taskObj);
-        localStorage.setItem("sujonTasks_Final", JSON.stringify(tasks));
+    function saveTask(task) {
+        let tasks = JSON.parse(localStorage.getItem("sujonTasks")) || [];
+        tasks.push(task);
+        localStorage.setItem("sujonTasks", JSON.stringify(tasks));
     }
 
     function loadTasks() {
-        let tasks = JSON.parse(localStorage.getItem("sujonTasks_Final")) || [];
+        let tasks = JSON.parse(localStorage.getItem("sujonTasks")) || [];
         tasks.forEach(displayTask);
-        updateProgress();
     }
 
     function removeTask(btn, id) {
-        btn.closest('li').remove();
-        let tasks = JSON.parse(localStorage.getItem("sujonTasks_Final")) || [];
+        btn.parentElement.remove();
+        let tasks = JSON.parse(localStorage.getItem("sujonTasks")) || [];
         tasks = tasks.filter(t => t.id !== id);
-        localStorage.setItem("sujonTasks_Final", JSON.stringify(tasks));
-        updateProgress();
+        localStorage.setItem("sujonTasks", JSON.stringify(tasks));
     }
 
-    function updateProgress() {
-        let tasks = JSON.parse(localStorage.getItem("sujonTasks_Final")) || [];
-        let bar = document.getElementById("progressBar");
-        let percent = (tasks.length / 5) * 100; 
-        bar.style.width = Math.min(percent, 100) + "%";
+    function saveNote() {
+        localStorage.setItem("sujonNote", document.getElementById("personalNote").value);
+    }
+
+    function calcIn(v) { document.getElementById("calcDisplay").value += v; }
+    function calculate() {
+        try { document.getElementById("calcDisplay").value = eval(document.getElementById("calcDisplay").value); }
+        catch { alert("ভুল!"); document.getElementById("calcDisplay").value = ""; }
     }
 </script>
 
